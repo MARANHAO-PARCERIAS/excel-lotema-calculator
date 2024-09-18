@@ -2,9 +2,13 @@ import openpyxl
 from rich import print
 import datetime
 import logging
+import locale
 
 # Configuração do logging
 logging.basicConfig(filename='calculo_repasses.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+# Configurar a localização para usar vírgula como separador decimal
+locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
 
 def calcular_valores_em_reais(valor_base, modalidades):
     """Calcula o valor em reais para cada modalidade."""
@@ -12,9 +16,9 @@ def calcular_valores_em_reais(valor_base, modalidades):
     total = 0
     for modalidade, taxa in modalidades.items():
         valor_em_reais = taxa * valor_base
-        valores_em_reais[modalidade] = round(valor_em_reais, 8)
+        valores_em_reais[modalidade] = round(valor_em_reais, 2)
         total += valor_em_reais
-    valores_em_reais["Total"] = round(total, 8)
+    valores_em_reais["Total"] = round(total, 2)
     return valores_em_reais
 
 def salvar_resultado(nome_arquivo, tipo_calculo, modalidades):
@@ -87,7 +91,15 @@ def main():
             }
 
         # Solicitando o valor do GGR
-        valor_base = round(float(input("\n Digite o valor do GGR: ")), 2)
+        valor_base = input("\n Digite o valor do GGR (use ponto ou vírgula para separar as casas decimais): ")
+        
+        # Ajustando o formato do valor de entrada
+        if valor_base.count(',') == 1 and valor_base.count('.') <= 1: 
+            valor_base = valor_base.replace(',', '.')  
+        else:
+            valor_base = valor_base.replace(',', '')  
+
+        valor_base = round(float(valor_base), 2)
 
         # Calculando os valores em reais
         valores_em_reais = calcular_valores_em_reais(valor_base, modalidades)
@@ -96,7 +108,7 @@ def main():
         print("\nRESULTADOS:")
         print(f"{tipo_calculo_texto},Modalidade,Valor em Reais")
         for modalidade, valor in valores_em_reais.items():
-            print(f"{tipo_calculo_texto},{modalidade},{valor:.2f}")
+            print(f"{tipo_calculo_texto},{modalidade},{valor:n}")  # Exibe com vírgula
 
         # Obtém a data e hora atuais
         agora = datetime.datetime.now()
