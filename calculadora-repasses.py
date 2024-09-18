@@ -91,7 +91,7 @@ def main():
             }
 
         # Solicitando o valor do GGR
-        valor_base = input("\n Digite o valor do GGR (use ponto ou vírgula para separar as casas decimais): ")
+        valor_base = input(f"\nDigite o valor do GGR de {tipo_calculo_texto}: ")
         
         # Ajustando o formato do valor de entrada
         if valor_base.count(',') == 1 and valor_base.count('.') <= 1: 
