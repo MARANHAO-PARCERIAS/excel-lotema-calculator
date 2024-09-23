@@ -129,6 +129,7 @@ def main():
         print(f"[bold red]Erro: {e}[/]")
 
     input("\nPressione Enter para sair...")
+    os.system("pause") 
 
 if __name__ == "__main__":
     main()
