@@ -99,7 +99,12 @@ def main():
         else:
             valor_base = valor_base.replace(',', '')  
 
-        valor_base = round(float(valor_base), 2)
+        try:
+            valor_base = round(float(valor_base), 2)
+        except ValueError as e:
+            logging.error(f"Erro ao calcular o valor do GGR: {e}")
+            print(f"[bold red]Erro: Não foi possível calcular o valor do GGR. Certifique-se de digitar um valor numérico válido.[/]")
+            return  # Encerra o programa se o valor do GGR for inválido
 
         # Calculando os valores em reais
         valores_em_reais = calcular_valores_em_reais(valor_base, modalidades)
