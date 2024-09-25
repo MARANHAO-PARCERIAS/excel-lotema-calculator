@@ -64,12 +64,13 @@ def main():
         print("\nEscolha o tipo de cálculo:")
         print("[bold blue]1[/bold blue]  - Prognóstico Numérico")
         print("[bold blue]2[/bold blue]  - Quota Fixa")
+        print("[bold blue]3[/bold blue]  - Instantânea")
 
         tipo_calculo = input("Digite o número da opção desejada: ")
 
         # Validação da escolha do tipo de cálculo
-        while tipo_calculo not in ["1", "2"]:
-            print("[bold red] Opção inválida. Digite 1 ou 2.[/]")
+        while tipo_calculo not in ["1", "2", "3"]:
+            print("[bold red] Opção inválida. Digite 1, 2 ou 3.[/]")
             tipo_calculo = input("Digite o número da opção desejada: ")
 
         # Definição das modalidades e taxas
@@ -82,12 +83,23 @@ def main():
                 "Seg. Social": 0.015,
                 "P.P. Infân. e Juven.": 0.015
             }
-        else:
+        elif tipo_calculo == "2":
             tipo_calculo_texto = "QUOTA FIXA"
             modalidades = {
                 "Educação": 0.02,
                 "Seg. Social": 0.015,
                 "Times": 0.015
+            }
+        elif tipo_calculo == "3":
+            tipo_calculo_texto = "INSTANTÂNEA"
+            modalidades = {
+                "Educação": 0.05,
+                "MAPA": 0.015,
+                "P.P. Prev. e Comb. a Desas.": 0.015,
+                "Seg. Social": 0.015,
+                "P.P. Infân. e Juven.": 0.015,
+                
+                
             }
 
         # Solicitação do valor do GGR com tentativa de entrada válida
@@ -107,6 +119,7 @@ def main():
                 mensagem_erro = "Erro: Valor numérico inválido. Por favor, insira um valor numérico válido."
                 logging.error(f"Erro ao converter o valor do GGR. Entrada inválida: {valor_base}")
                 print(f"[bold red]{mensagem_erro}[/]")
+                # Continua no loop até que o valor seja válido
 
         # Calculando os valores em reais
         valores_em_reais = calcular_valores_em_reais(valor_base, modalidades)
