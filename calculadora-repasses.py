@@ -90,21 +90,23 @@ def main():
                 "Times": 0.015
             }
 
-        # Solicitando o valor do GGR
-        valor_base = input(f"\nDigite o valor do GGR de {tipo_calculo_texto}: ")
-        
-        # Ajustando o formato do valor de entrada
-        if valor_base.count(',') == 1 and valor_base.count('.') <= 1: 
-            valor_base = valor_base.replace(',', '.')  
-        else:
-            valor_base = valor_base.replace(',', '')  
+        # Solicitação do valor do GGR com tentativa de entrada válida
+        while True:
+            valor_base = input(f"\nDigite o valor do GGR de {tipo_calculo_texto}: ")
 
-        try:
-            valor_base = round(float(valor_base), 2)
-        except ValueError as e:
-            logging.error(f"Erro ao calcular o valor do GGR: {e}")
-            print(f"[bold red]Erro: Não foi possível calcular o valor do GGR. Certifique-se de digitar um valor numérico válido.[/]")
-            return  # Encerra o programa se o valor do GGR for inválido
+            # Ajustando o formato do valor de entrada
+            if valor_base.count(',') == 1 and valor_base.count('.') <= 1: 
+                valor_base = valor_base.replace(',', '.')  
+            else:
+                valor_base = valor_base.replace(',', '')  
+
+            try:
+                valor_base = round(float(valor_base), 2)
+                break  # Sai do loop se o valor for válido
+            except ValueError as e:
+                mensagem_erro = "Erro: Valor numérico inválido. Por favor, insira um valor numérico válido."
+                logging.error(f"Erro ao converter o valor do GGR. Entrada inválida: {valor_base}")
+                print(f"[bold red]{mensagem_erro}[/]")
 
         # Calculando os valores em reais
         valores_em_reais = calcular_valores_em_reais(valor_base, modalidades)
@@ -129,7 +131,6 @@ def main():
         print(f"[bold red]Erro: {e}[/]")
 
     input("\nPressione Enter para sair...")
-    os.system("pause") 
 
 if __name__ == "__main__":
     main()
